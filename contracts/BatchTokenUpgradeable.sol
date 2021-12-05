@@ -14,6 +14,7 @@ contract BatchTokenUpgradeable is OwnableUpgradeable {
     mapping(bytes32 => int256) internal intStorage;
     event Multisended(uint256 total, address tokenAddress);
     event ClaimedTokens(address token, address owner, uint256 balance);
+    event Received(address, uint256);
 
     modifier hasFee() {
         if (currentFee(msg.sender) > 0) {
@@ -23,6 +24,10 @@ contract BatchTokenUpgradeable is OwnableUpgradeable {
     }
 
     fallback() external payable {}
+
+    receive() external payable {
+        emit Received(msg.sender, msg.value);
+    }
 
     function initialize() public initializer {
         __Ownable_init();
