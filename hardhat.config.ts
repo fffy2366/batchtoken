@@ -45,8 +45,8 @@ const config: HardhatUserConfig = {
       accounts: { mnemonic: MNEMONIC },
     },
     mainnet: {
-      url: "https://bsc-dataseed1.ninicoin.io/",
-      // url: "https://bsc-dataseed1.binance.org/",
+      // url: "https://bsc-dataseed1.ninicoin.io/",
+      url: "https://bsc-dataseed1.binance.org/",
       // url: "https://bsc-dataseed2.binance.org/",
       chainId: 56,
       gasPrice: 5000000000,

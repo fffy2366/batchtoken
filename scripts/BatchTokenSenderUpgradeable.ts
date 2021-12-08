@@ -22,3 +22,7 @@ main().catch((error) => {
 // npx hardhat --network testnet run scripts/BatchTokenSenderUpgradeable.ts
 // BatchTokenSenderUpgradeable deployed to: 0x7172d0BF2375307bcCb202ab32a4C52496654b1A
 // npx hardhat verify --contract contracts/BatchTokenSenderUpgradeable.sol:BatchTokenSenderUpgradeable --network testnet 0xF78DfD1D95Bd95ED6115e32f9e2A5C708289Dbd3
+
+// 2021-12-07
+// npx hardhat --network mainnet run scripts/BatchTokenSenderUpgradeable.ts
+// BatchTokenSenderUpgradeable deployed to: 0x2D973C629966D354B65040B0f15c220e62dEA8DD

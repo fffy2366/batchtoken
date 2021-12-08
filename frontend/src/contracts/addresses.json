@@ -1,0 +1,33 @@
+{
+    "KEY": {
+        "56": "0xf810d678612381064a2eff1484562301fc051a8b",
+        "97": "0xf810d678612381064a2eff1484562301fc051a8b"
+    },
+    "YOO": {
+        "56": "0x18A32fec9c8fF68B747f6c5b1CC3099AA6783059",
+        "97": "0x18A32fec9c8fF68B747f6c5b1CC3099AA6783059"
+    },
+    "NFTStakingV2": {
+        "56": "0x090D6eE1bb73f1e8891997f74f573B11D7D287f9",
+        "97": "0x090D6eE1bb73f1e8891997f74f573B11D7D287f9"
+    },
+    "ACryptoSFarmV4": {
+        "56": "0xdB6fBd5A9aa82084aeaa57B45B91f2B3b037344f",
+        "97": "0xdB6fBd5A9aa82084aeaa57B45B91f2B3b037344f"
+    },
+    "ACryptoSVault0": {
+        "56": "0xdB6fBd5A9aa82084aeaa57B45B91f2B3b037344f",
+        "97": "0xdB6fBd5A9aa82084aeaa57B45B91f2B3b037344f"
+    },
+    "ACryptoSVault": {
+        "56": "0x0d25FE004910e066CAB2C4fDcdDD74791b8d41f9",
+        "97": "0x0d25FE004910e066CAB2C4fDcdDD74791b8d41f9"
+    },
+    "IBEP20": {},
+    "YOONFT": {
+        "97": "0xc42a8d3851c5aE93c66004111D64a8C6D038d321"
+    },
+    "NFTMarket": {
+        "97": "0x0fBe25CE042943BFa97AA1da495B506cac89999D"
+    }
+}
