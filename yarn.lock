@@ -313,7 +313,7 @@
   dependencies:
     "@ethersproject/bignumber" "^5.5.0"
 
-"@ethersproject/contracts@5.5.0":
+"@ethersproject/contracts@5.5.0", "@ethersproject/contracts@^5.1.1":
   version "5.5.0"
   resolved "https://registry.npmmirror.com/@ethersproject/contracts/download/@ethersproject/contracts-5.5.0.tgz#b735260d4bd61283a670a82d5275e2a38892c197"
   integrity sha1-tzUmDUvWEoOmcKgtUnXio4iSwZc=
@@ -513,7 +513,7 @@
     "@ethersproject/rlp" "^5.5.0"
     "@ethersproject/signing-key" "^5.5.0"
 
-"@ethersproject/units@5.5.0":
+"@ethersproject/units@5.5.0", "@ethersproject/units@^5.5.0":
   version "5.5.0"
   resolved "https://registry.npmmirror.com/@ethersproject/units/download/@ethersproject/units-5.5.0.tgz#104d02db5b5dc42cc672cc4587bafb87a95ee45e"
   integrity sha1-EE0C21tdxCzGcsxFh7r7h6le5F4=
