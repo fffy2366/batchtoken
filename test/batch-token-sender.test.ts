@@ -27,7 +27,6 @@ async function gas(contract: any, parameters: any, options: any): Promise<any> {
 }
 describe("BatchTokenSenderTest", () => {
   /**
-   * yarn ts-mocha -f 'testBulkSendCoinWithSameValue' test/batch-token-sender.test.ts --timeout 100000 --exit
    * DEBUG=test:* npx hardhat test  test/batch-token-sender.test.ts
    */
   it("testBulkSendCoinWithSameValue", async () => {
