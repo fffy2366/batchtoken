@@ -1,6 +1,6 @@
 <template>
   <div class="main-screen-width main-content">
-    <div>
+    <div v-if="approve">
       <p class="label">摘要</p>
       <table class="networkSpeed table is-bordered">
         <tbody>
@@ -26,10 +26,10 @@
           </tr>
         </tbody>
       </table>
-      <div class="networkSpeed">
+      <div class="networkSpeed clearfix">
         <p class="label">授信额度</p>
         <div class="level">
-          <div class="level-left">
+          <div class="level-left float-start">
             <div class="field">
               <!---->
               <label class="b-radio radio radio-label-fix"
@@ -42,7 +42,7 @@
               <!---->
             </div>
           </div>
-          <div class="level-right">
+          <div class="level-right float-end">
             <div class="field">
               <!---->
               <label class="b-radio radio radio-label-fix"
@@ -67,7 +67,7 @@
     <!---->
     <!---->
     <!---->
-    <div class="networkSpeed">
+    <div class="networkSpeed" v-if="approve">
       <!---->
       <!---->
       <p class="padding-medium"></p>
@@ -82,12 +82,12 @@
       <!---->
       <button type="button" class="button is-info">
         <!---->
-        <span><span class="is-size-7"> 去授信</span></span>
+        <span><span class="btn btn-primary"> 去授信</span></span>
         <!---->
       </button>
     </div>
 
-    <div class="body-fix">
+    <div class="body-fix" v-if="send">
       <div class="main-screen-width main-content">
         <!---->
         <div>
@@ -95,56 +95,36 @@
             <div class="field has-addons">
               <!---->
               <p class="label">交易速度 (11 Gwei)</p>
+              <input
+                type="range"
+                class="form-range"
+                min="5"
+                max="20"
+                value="5"
+                step="5"
+              />
               <div
-                class="b-slider is-medium is-primary is-rounded"
+                class="
+                  b-slider
+                  is-medium is-primary is-rounded
+                  align-items-center
+                "
                 custom-formatter='function(e){return e+" Gwei"}'
               >
-                <div class="b-slider-track">
-                  <div
-                    class="b-slider-fill"
-                    style="width: 16.6667%; left: 0%"
-                  ></div>
-                  <!---->
-                  <div
-                    class="
-                      b-slider-tick b-slider-tick-label-left-fix
-                      is-tick-hidden
-                    "
-                    style="left: 0%"
-                  >
+                <div class="w-100">
+                  <div class="d-flex justify-content-start float-start">
                     <span class="b-slider-tick-label">慢</span>
                   </div>
                   <!---->
-                  <!----><!---->
-                  <div class="b-slider-tick" style="left: 16.6667%">
-                    <span class="b-slider-tick-label">快</span>
-                  </div>
-                  <!----><!---->
+
                   <!---->
-                  <div
-                    class="
-                      b-slider-tick b-slider-tick-label-right-fix
-                      is-tick-hidden
-                    "
-                    style="left: 100%"
-                  >
-                    <span class="b-slider-tick-label">极速</span>
+                  <div class="d-flex justify-content-end float-end">
+                    <span class="b-slider-tick-label float-end">极速</span>
                   </div>
-                  <div class="b-slider-thumb-wrapper" style="left: 16.6667%">
-                    <span
-                      data-label="11"
-                      class="is-primary is-top is-medium b-tooltip"
-                      style="transition-delay: 0ms"
-                      ><div
-                        tabindex="0"
-                        role="slider"
-                        aria-valuenow="11"
-                        aria-valuemin="10"
-                        aria-valuemax="16"
-                        aria-orientation="horizontal"
-                        class="b-slider-thumb"
-                      ></div
-                    ></span>
+                  <div
+                    class="d-flex justify-content-center float-center clearfix"
+                  >
+                    <span class="b-slider-tick-label">快</span>
                   </div>
                   <!---->
                 </div>
@@ -220,15 +200,13 @@
                     class="mdi mdi-chevron-left mdi-24px"
                   ></i></span></span></a
           ></a>
-          <button type="button" class="button is-info">
-            <!---->
-            <span
-              ><span class="is-size-7"
-                ><router-link to="/send">发送</router-link></span
-              ></span
-            >
-            <!---->
-          </button>
+          <!---->
+          <span
+            ><router-link tag="button" class="btn btn-primary" to="/send"
+              >发送</router-link
+            ></span
+          >
+          <!---->
           <!---->
           <!---->
           <!---->
@@ -237,3 +215,37 @@
     </div>
   </div>
 </template>
+
+<script>
+import { mapGetters } from "vuex";
+
+export default {
+  name: "Home",
+
+  data() {
+    return {
+      msg: "Welcome",
+      approve: false,
+      send: true,
+    };
+  },
+  computed: {
+    ...mapGetters("accounts", ["getChainName", "isUserConnected"]),
+  },
+  components: {},
+  methods: {
+    changes: {},
+  },
+};
+</script>
+
+<style lang="sass">
+@mixin clearfix()
+  &::after
+    display: block
+    clear: both
+    content: ""
+
+.clearfix
+  @include clearfix
+</style>
