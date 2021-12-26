@@ -31,7 +31,7 @@
             <p>{{ getActiveAccount }}</p>
             <p>
               <strong>Your BNB balance:</strong>
-              {{ Number(activeBalanceEth).toFixed(4) }} ETH
+              {{ Number(getActiveBalanceEth).toFixed(4) }} ETH
             </p>
           </div>
         </div>
@@ -58,10 +58,16 @@ export default {
     ...mapGetters("accounts", ["getActiveAccount", "getActiveBalanceEth"]),
   },
   async created() {
-    await this.$store.dispatch("accounts/initWeb3Modal");
-    await this.$store.dispatch("accounts/fetchActiveBalance");
-    this.$store.dispatch("accounts/ethereumListener");
-    this.activeBalanceEth = await this.getActiveBalanceEth;
+    // await this.$store.dispatch("accounts/initWeb3Modal");
+    // await this.$store.dispatch("accounts/fetchActiveBalance");
+    // this.$store.dispatch("accounts/ethereumListener");
+    // this.activeBalanceEth = await this.getActiveBalanceEth;
+  },
+  watch: {
+    getActiveBalanceEth(newVal, oldVal) {
+      console.log(newVal, oldVal);
+      this.activeBalanceEth = newVal;
+    },
   },
 };
 </script>

@@ -42,12 +42,36 @@
                 ></span>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">链接 1</a></li>
-                <li><a class="dropdown-item" href="#">链接 2</a></li>
-                <li><a class="dropdown-item" href="#">链接 3</a></li>
+                <li
+                  v-for="token in tokenList"
+                  :key="token.contract_ticker_symbol"
+                >
+                  <a class="dropdown-item" href="#"
+                    >{{ token.contract_ticker_symbol }} -
+                    {{ token.contract_address }}</a
+                  >
+                </li>
               </ul>
             </div>
-
+            <div
+              style="
+                position: absolute;
+                right: 0px;
+                top: 0px;
+                cursor: pointer;
+                display: block;
+              "
+              class="input_clear"
+            >
+              <button
+                type="button"
+                class="btn close"
+                data-dismiss="modal"
+                aria-hidden="true"
+              >
+                ×
+              </button>
+            </div>
             <input
               type="input"
               class="form-control"
@@ -72,7 +96,9 @@
           <label class="w-100 d-flex align-items-center" for="decimal"
             >收款地址和数量
             <span class="float-end text-end"
-              ><button class="btn">上传文件</button></span
+              ><a class="text-underline-hover btn d-flex justify-content-end"
+                >上传文件</a
+              ></span
             >
           </label>
           <div>
@@ -125,6 +151,7 @@ export default {
     return {
       msg: "Welcome",
       item: { content: "11" },
+      tokenList: [],
       // cmOptions: {
       //   tabSize: 4,
       //   mode: "python",
@@ -141,13 +168,46 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("accounts", ["getChainName", "isUserConnected"]),
+    ...mapGetters("accounts", [
+      "getChainId",
+      "getChainName",
+      "isUserConnected",
+      "getActiveAccount",
+    ]),
+    ...mapGetters("service", ["getTokenList"]),
   },
   components: {
     Codemirror,
   },
   methods: {
     changes: {},
+  },
+  async created() {
+    const tl = await this.getTokenList;
+    this.tokenList = tl?.data?.items ?? [];
+    console.log("tokenList is %o", this.tokenList);
+  },
+  watch: {
+    getTokenList(newVal, oldVal) {
+      console.log(newVal, oldVal);
+      this.tokenList = newVal.data.items;
+    },
+    async getActiveAccount(newVal, oldVal) {
+      console.log(newVal, oldVal);
+      await this.$store.dispatch("service/fetchTokenList", {
+        chainId: this.getChainId,
+        address: newVal,
+      });
+    },
+    async getChainId(newVal, oldVal) {
+      // console.log(newVal, oldVal);
+      if (oldVal) {
+        await this.$store.dispatch("service/fetchTokenList", {
+          chainId: newVal,
+          address: this.getActiveAccount,
+        });
+      }
+    },
   },
   setup() {
     let code = ref(`
@@ -176,4 +236,12 @@ for (; i < 9; i++) {
 .web3modal-modal-lightbox {
   z-index: 4 !important;
 }
+
+.text-underline-hover {
+  text-decoration: underline !important;
+}
+
+// .text-underline-hover:hover {
+//   text-decoration: underline;
+// }
 </style>

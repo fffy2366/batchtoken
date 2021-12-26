@@ -128,6 +128,8 @@ const actions = {
         commit("setActiveAccount", accounts[0]);
         commit("setWeb3Provider", state.providerW3m);
         actions.fetchActiveBalance({ commit });
+        // 这里公共的地方，应该监听地址变化再获取
+        // this.dispatch("service/fetchTokenList", { commit }, { root: true });
       }
     });
 
@@ -135,6 +137,7 @@ const actions = {
       commit("setChainData", chainId);
       commit("setWeb3Provider", state.providerW3m);
       actions.fetchActiveBalance({ commit });
+      // this.dispatch("service/fetchTokenList", { commit }, { root: true });
     });
   },
 
