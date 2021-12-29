@@ -1,5 +1,5 @@
 import axios from 'axios'
-axios.defaults.timeout = 10000; // 超时10秒
+axios.defaults.timeout = 20000; // 超时20秒
 axios.defaults.headers.post['Content-Type'] = 'Content-Type:application/json; charset=UTF-8'
 
 const state = {

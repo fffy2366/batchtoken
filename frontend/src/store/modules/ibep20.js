@@ -6,6 +6,8 @@ const state = {
     ibep20Address: [],
     ibep20Contract: [],
     balance: [], // 余额
+    decimals: null, // 精度
+    tokenSymbol: [], // 代币符号
     start: null,
     end: null,
     totalProvided: null,
@@ -24,6 +26,12 @@ const getters = {
     },
     getIBEP20Balance(state) {
         return state.balance;
+    },
+    getDecimails(state) {
+        return state.decimals;
+    },
+    getTokenSymbol(state) {
+        return state.tokenSymbol;
     }
 };
 
@@ -82,6 +90,52 @@ const actions = {
         commit('setIBEP20Balance', { address, balance });
         return balance;
     },
+
+    async fetchDecimails({ commit, rootState }, { address }) {
+        if (!state.ibep20Contract || !state.ibep20Contract[address]) {
+            console.log("fetchIBEP20Contract");
+            // await dispatch('fetchIBEP20Contract', { address });
+            await actions.fetchIBEP20Contract({ commit, rootState }, { address });
+
+        }
+        if (!state.ibep20Contract[address]) {
+            console.error("state.ibep20Contract[address] undefined, address %s", address);
+            return;
+        }
+        let decimals = await state.ibep20Contract[address].methods
+            .decimals()
+            .call();
+        commit('setDecimails', { address, decimals })
+    },
+
+    async fetchTokenSymbol({ commit, dispatch }, { address }) {
+        if (!state.ibep20Contract || !state.ibep20Contract[address]) {
+            console.log("fetchIBEP20Contract");
+            await dispatch('fetchIBEP20Contract', { address });
+        }
+        if (!state.ibep20Contract[address]) {
+            console.error("state.ibep20Contract[address] undefined, address %s", address);
+            return;
+        }
+        let symbol = await state.ibep20Contract[address].methods
+            .symbol()
+            .call();
+        commit('setTokenSymbol', { address, symbol })
+    },
+
+    async approve({ dispatch }, { address, spender, amount }) {
+        if (!state.ibep20Contract || !state.ibep20Contract[address]) {
+            await dispatch('fetchIBEP20Contract', { address });
+        }
+        if (!state.ibep20Contract[address]) {
+            return;
+        }
+        const res = await state.ibep20Contract[address].methods
+            .approve(spender, amount)
+            .send();
+        const receipt = await res.wait();
+        return receipt;
+    }
 };
 
 const mutations = {
@@ -98,6 +152,16 @@ const mutations = {
         // console.log("setIBEP20Balance address is %s, balance is %s", address, balance);
         state.balance[address] = balance;
     },
+    setDecimails(state, { decimals }) {
+        // state.decimals[address] = decimals;
+        // console.log("address %s, decimals %o", address, state.decimals[address]);
+        state.decimals = decimals;
+        console.log("setDecimails %s", decimals);
+    },
+    setTokenSymbol(state, { address, symbol }) {
+        state.tokenSymbol[address] = symbol;
+        console.log("tokenSymbol %o", state.tokenSymbol);
+    }
 };
 
 export default {

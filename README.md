@@ -51,3 +51,4 @@ For faster runs of your tests and scripts, consider skipping ts-node's type chec
 - [BulkSender](https://github.com/howeguo/Token-BulkSender)
 - [codemirror](https://renncheung.github.io/codemirror-editor-vue3/config/events.html)
 - [bootstrap-5-range-slider](https://www.markuptag.com/bootstrap-5-range-slider-html-example/)
+- [wallet api](https://www.covalenthq.com/)

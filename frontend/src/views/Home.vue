@@ -46,9 +46,16 @@
                   v-for="token in tokenList"
                   :key="token.contract_ticker_symbol"
                 >
-                  <a class="dropdown-item" href="#"
-                    >{{ token.contract_ticker_symbol }} -
-                    {{ token.contract_address }}</a
+                  <a
+                    class="dropdown-item"
+                    @click="tokenAddress = token.contract_address"
+                    href="javascript:void(0)"
+                    >{{ token.contract_ticker_symbol }}
+                    {{
+                      token.contract_ticker_symbol == "BNB"
+                        ? ""
+                        : "-" + token.contract_address
+                    }}</a
                   >
                 </li>
               </ul>
@@ -76,6 +83,7 @@
               type="input"
               class="form-control"
               id="token"
+              v-model="tokenAddress"
               placeholder="请选择代币或粘贴代币地址"
             />
           </div>
@@ -88,12 +96,15 @@
             class="form-control"
             id="decimal"
             placeholder=""
+            v-model="decimails"
           />
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <label class="w-100 d-flex align-items-center" for="decimal"
+          <label
+            class="w-100 d-flex align-items-center justify-content-between"
+            for="decimal"
             >收款地址和数量
             <span class="float-end text-end"
               ><a class="text-underline-hover btn d-flex justify-content-end"
@@ -110,9 +121,9 @@
               :height="200"
               @change="change"
             />
-            <div>
+            <div class="align-items-center d-flex justify-content-between">
               每一行应包括地址和数量，逗号分隔
-              <button class="btn">查看例子</button>
+              <button class="btn text-underline-hover">查看例子</button>
             </div>
           </div>
         </div>
@@ -151,6 +162,8 @@ export default {
     return {
       msg: "Welcome",
       item: { content: "11" },
+      tokenAddress: "",
+      decimails: null,
       tokenList: [],
       // cmOptions: {
       //   tabSize: 4,
@@ -175,6 +188,8 @@ export default {
       "getActiveAccount",
     ]),
     ...mapGetters("service", ["getTokenList"]),
+    ...mapGetters("ibep20", ["getDecimails"]),
+    // ...mapGetters("batchtokensender", ["getDecimails"]),
   },
   components: {
     Codemirror,
@@ -207,6 +222,19 @@ export default {
           address: this.getActiveAccount,
         });
       }
+    },
+
+    async tokenAddress(newVal, oldVal) {
+      console.log("tokenAddress newVal %s, oldVal %s ", newVal, oldVal);
+      await this.$store.dispatch("ibep20/fetchIBEP20Contract", {
+        address: newVal,
+      });
+      await this.$store.dispatch("ibep20/fetchDecimails", {
+        address: newVal,
+      });
+      const _decimails = this.getDecimails;
+      console.log("_decimails is %s", _decimails);
+      this.decimails = _decimails;
     },
   },
   setup() {
