@@ -114,26 +114,32 @@
           </label>
           <div>
             <Codemirror
-              v-model="code"
+              :value="code"
               :options="cmOptions"
               border
               placeholder="test placeholder"
               :height="200"
-              @change="change"
+              @change="onChange"
+              @blur="onBlur"
+              @focus="onFocus"
             />
             <div class="align-items-center d-flex justify-content-between">
               每一行应包括地址和数量，逗号分隔
-              <button class="btn text-underline-hover">查看例子</button>
+              <button class="btn text-underline-hover" @click="demo">
+                查看例子
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      <router-link to="/confirm" tag="button" class="btn btn-primary">
+      <!-- <router-link to="/confirm" tag="button" class="btn btn-primary">
         下一步
-      </router-link>
+      </router-link> -->
 
-      <!-- <button type="button" class="btn btn-primary">下一步</button> -->
+      <button type="button" class="btn btn-primary" @click="confirm">
+        下一步
+      </button>
     </div>
   </div>
 </template>
@@ -143,9 +149,6 @@
 //github.com/RennCheung/codemirror-editor-vue3
 import { mapGetters } from "vuex";
 import Codemirror from "codemirror-editor-vue3";
-
-// plugin-style
-import "codemirror-editor-vue3/dist/style.css";
 
 // language
 import "codemirror/mode/javascript/javascript.js";
@@ -165,19 +168,7 @@ export default {
       tokenAddress: "",
       decimails: null,
       tokenList: [],
-      // cmOptions: {
-      //   tabSize: 4,
-      //   mode: "python",
-      //   theme: "darcula",
-      //   lineNumbers: true,
-      //   lineWrapping: true,
-      //   extraKeys: { Ctrl: "autocomplete" },
-      //   lineWiseCopyCut: true,
-      //   showCursorWhenSelecting: true,
-      //   matchBrackets: true,
-      //   // readOnly: 'nocursor',
-      //   line: true,
-      // },
+      cm: null,
     };
   },
   computed: {
@@ -186,6 +177,7 @@ export default {
       "getChainName",
       "isUserConnected",
       "getActiveAccount",
+      "getWeb3",
     ]),
     ...mapGetters("service", ["getTokenList"]),
     ...mapGetters("ibep20", ["getDecimails"]),
@@ -195,7 +187,41 @@ export default {
     Codemirror,
   },
   methods: {
-    changes: {},
+    demo() {
+      this.code = `0xc3e450Ecbc3C84225bdFeeEA32e3a4a288Fc856F,0.1
+0x5E202328cb51a577F75F435Fc8b68130dF8407f1,0.2
+0xeFA74C5F32ebB63f7111CC4eEc72A5795d6ff2fb,1`;
+      // console.log("code %s", this.code);
+    },
+    confirm() {
+      this.$router.push("/confirm");
+    },
+    deleteInvalidAddress() {
+      this.code = `0xc3e450Ecbc3C84225bdFeeEA32e3a4a288Fc856F,0.1
+0xeFA74C5F32ebB63f7111CC4eEc72A5795d6ff2fb,1`;
+    },
+    onBlur(cm, event) {
+      const web3 = this.getWeb3;
+      console.log("web3 is %o", web3);
+      console.log("cm %o, event %o", cm, event);
+      const doc = cm.doc;
+      let i = 0;
+      doc.eachLine(function (line) {
+        i++;
+        console.log("line %o", line);
+        const address = line.text.split(",")[0];
+        console.log("address is %s", address);
+        if (!web3.utils.isAddress(address)) {
+          cm.markText(
+            { line: i - 1, ch: 0 },
+            { line: i, ch: 0 },
+            { css: "color: #F05252" }
+          );
+          console.log("i %d, address %s valid", i, address);
+        }
+      });
+      // this.deleteInvalidAddress();
+    },
   },
   async created() {
     const tl = await this.getTokenList;
@@ -244,7 +270,7 @@ for (; i < 9; i++) {
   console.log(i);
   // more statements
 }`);
-    code = ref(`aa,1`);
+    code = ref(``);
     return {
       code,
       cmOptions: {
@@ -255,6 +281,15 @@ for (; i < 9; i++) {
         indentUnit: 2, // The smart indent unit is 2 spaces in length
         foldGutter: true, // Code folding
         styleActiveLine: true, // Display the style of the selected row
+      },
+      onChange(val, cm) {
+        console.log("code is %s", code);
+        console.log("val %s, cm %o", val, cm);
+      },
+
+      onFocus(cm, event) {
+        console.log("code is %s", code);
+        console.log("cm %o, event %o", cm, event);
       },
     };
   },
