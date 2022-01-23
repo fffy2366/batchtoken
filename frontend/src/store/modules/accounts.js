@@ -152,8 +152,8 @@ const mutations = {
     state.activeAccount = null;
     state.activeBalance = 0;
     state.web3 = null;
-    if (state.providerW3m.close && state.providerW3m !== null) {
-      await state.providerW3m.close();
+    if (state.providerW3m.disconnect && state.providerW3m !== null) {
+      await state.providerW3m.disconnect();
     }
     state.providerW3m = null;
     await state.web3Modal.clearCachedProvider();

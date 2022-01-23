@@ -114,7 +114,7 @@
           </label>
           <div>
             <Codemirror
-              :value="code"
+              v-model:value="code"
               :options="cmOptions"
               border
               placeholder="test placeholder"
@@ -136,6 +136,27 @@
       <!-- <router-link to="/confirm" tag="button" class="btn btn-primary">
         下一步
       </router-link> -->
+      <section>
+        <input type="file" @change="onChangeUpload" />
+        <xlsx-read :file="file">
+          <xlsx-sheets>
+            <template #default="{ sheets }">
+              <select v-model="selectedSheet">
+                <option v-for="sheet in sheets" :key="sheet" :value="sheet">
+                  {{ sheet }}
+                </option>
+              </select>
+            </template>
+          </xlsx-sheets>
+          <xlsx-json :sheet="selectedSheet">
+            <template #default="{ collection }">
+              <div>
+                {{ collection }}
+              </div>
+            </template>
+          </xlsx-json>
+        </xlsx-read>
+      </section>
 
       <button type="button" class="btn btn-primary" @click="confirm">
         下一步
@@ -157,10 +178,22 @@ import "codemirror/mode/javascript/javascript.js";
 import "codemirror/theme/dracula.css";
 
 import { ref } from "vue";
+import XlsxRead from "@/components/XlsxRead.vue";
+import XlsxSheets from "@/components/XlsxSheets.vue";
+import XlsxJson from "@/components/XlsxJson.vue";
+// import { XlsxRead, XlsxSheets, XlsxJson } from "vue3-xlsx/dist/vue3-xlsx.cjs.prod.js";
 
 export default {
   name: "Home",
-
+  props: {
+    options: {
+      type: Object,
+      default: () => ({}),
+    },
+    collection: {
+      type: Object,
+    },
+  },
   data() {
     return {
       msg: "Welcome",
@@ -169,6 +202,11 @@ export default {
       decimails: null,
       tokenList: [],
       cm: null,
+      hasInvalidAddress: false,
+      selectedSheet: null,
+      sheetName: null,
+      sheets: [{ name: "SheetOne", data: [{ c: 2 }] }],
+      // collection: [{ a: 1, b: 2 }],
     };
   },
   computed: {
@@ -185,29 +223,41 @@ export default {
   },
   components: {
     Codemirror,
+    XlsxRead,
+    XlsxSheets,
+    XlsxJson,
   },
   methods: {
     demo() {
       this.code = `0xc3e450Ecbc3C84225bdFeeEA32e3a4a288Fc856F,0.1
 0x5E202328cb51a577F75F435Fc8b68130dF8407f1,0.2
 0xeFA74C5F32ebB63f7111CC4eEc72A5795d6ff2fb,1`;
-      // console.log("code %s", this.code);
+      console.log("code %s", this.code);
     },
     confirm() {
+      if (this.hasInvalidAddress) {
+        return;
+      }
       this.$router.push("/confirm");
+    },
+    verifyAddress() {
+      return true;
     },
     deleteInvalidAddress() {
       this.code = `0xc3e450Ecbc3C84225bdFeeEA32e3a4a288Fc856F,0.1
 0xeFA74C5F32ebB63f7111CC4eEc72A5795d6ff2fb,1`;
     },
-    onBlur(cm, event) {
+    onBlur(cm) {
       const web3 = this.getWeb3;
-      console.log("web3 is %o", web3);
-      console.log("cm %o, event %o", cm, event);
+      // console.log("cm %o, event %o", cm, event);
       const doc = cm.doc;
       let i = 0;
+      this.hasInvalidAddress = false;
       doc.eachLine(function (line) {
         i++;
+        if (!line.text) {
+          return;
+        }
         console.log("line %o", line);
         const address = line.text.split(",")[0];
         console.log("address is %s", address);
@@ -217,10 +267,24 @@ export default {
             { line: i, ch: 0 },
             { css: "color: #F05252" }
           );
-          console.log("i %d, address %s valid", i, address);
+          this.hasInvalidAddress = true;
+          console.error("i %d, address %s valid", i, address);
+        } else {
+          cm.markText(
+            { line: i - 1, ch: 0 },
+            { line: i, ch: 0 },
+            { css: "color: #bd93f9" }
+          );
         }
       });
-      // this.deleteInvalidAddress();
+    },
+    onChangeUpload(event) {
+      // console.log(event);
+      this.file = event.target.files ? event.target.files[0] : null;
+    },
+    addSheet() {
+      this.sheets.push({ name: this.sheetName, data: [...this.collection] });
+      this.sheetName = null;
     },
   },
   async created() {
@@ -264,13 +328,7 @@ export default {
     },
   },
   setup() {
-    let code = ref(`
-var i = 0;
-for (; i < 9; i++) {
-  console.log(i);
-  // more statements
-}`);
-    code = ref(``);
+    let code = ref(``);
     return {
       code,
       cmOptions: {
@@ -302,6 +360,10 @@ for (; i < 9; i++) {
 
 .text-underline-hover {
   text-decoration: underline !important;
+}
+
+.text-err {
+  color: #f05252 !important;
 }
 
 // .text-underline-hover:hover {

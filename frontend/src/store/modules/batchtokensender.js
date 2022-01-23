@@ -12,6 +12,8 @@ const state = {
     end: null,
     totalProvided: null,
     totalDistributeAmount: null,
+    receiveAddresses: [],
+    amounts: []
 };
 
 const getters = {

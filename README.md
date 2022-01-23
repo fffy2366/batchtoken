@@ -53,3 +53,4 @@ For faster runs of your tests and scripts, consider skipping ts-node's type chec
 - [CodeMirror中文说明文档](https://www.tun6.com/projects/code_mirror/api/)
 - [bootstrap-5-range-slider](https://www.markuptag.com/bootstrap-5-range-slider-html-example/)
 - [wallet api](https://www.covalenthq.com/)
+- [solidity-template](https://github.com/paulrberg/solidity-template)

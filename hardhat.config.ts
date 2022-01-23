@@ -26,7 +26,22 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 // Go to https://hardhat.org/config/ to learn more
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.4",
+  solidity: {
+    version: "0.8.4",
+    settings: {
+      metadata: {
+        // Not including the metadata hash
+        // https://github.com/paulrberg/solidity-template/issues/31
+        bytecodeHash: "none",
+      },
+      // Disable the optimizer when debugging
+      // https://hardhat.org/hardhat-network/#solidity-optimizer-support
+      optimizer: {
+        enabled: true,
+        runs: 800,
+      },
+    },
+  },
   networks: {
     ropsten: {
       url: process.env.ROPSTEN_URL || "",
@@ -41,7 +56,7 @@ const config: HardhatUserConfig = {
       blockGasLimit: 0x1fffffffffffff,
       throwOnTransactionFailures: true,
       throwOnCallFailures: true,
-      // allowUnlimitedContractSize: true,
+      allowUnlimitedContractSize: true,
       accounts: { mnemonic: MNEMONIC },
     },
     mainnet: {
