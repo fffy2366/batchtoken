@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { ethers, upgrades } from "hardhat";
+
 async function main() {
     const BatchTokenSenderUpgradeable = await ethers.getContractFactory("BatchTokenSenderUpgradeable");
     const sender = await upgrades.deployProxy(BatchTokenSenderUpgradeable, [], { initializer: "initialize" });
@@ -26,3 +27,7 @@ main().catch((error) => {
 // 2021-12-07
 // npx hardhat --network mainnet run scripts/BatchTokenSenderUpgradeable.ts
 // BatchTokenSenderUpgradeable deployed to: 0x2D973C629966D354B65040B0f15c220e62dEA8DD
+
+// 2022-01-30 
+// npx hardhat --network testnetIpx run scripts/BatchTokenSenderUpgradeable.ts
+// BatchTokenSenderUpgradeable deployed to: 0x570dAc16365d6450c27e21Fef53d122235c6b63c

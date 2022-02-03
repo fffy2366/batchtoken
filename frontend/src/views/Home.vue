@@ -185,15 +185,7 @@ import XlsxJson from "@/components/XlsxJson.vue";
 
 export default {
   name: "Home",
-  props: {
-    options: {
-      type: Object,
-      default: () => ({}),
-    },
-    collection: {
-      type: Object,
-    },
-  },
+  
   data() {
     return {
       msg: "Welcome",
@@ -203,10 +195,11 @@ export default {
       tokenList: [],
       cm: null,
       hasInvalidAddress: false,
+      file: null,
       selectedSheet: null,
       sheetName: null,
       sheets: [{ name: "SheetOne", data: [{ c: 2 }] }],
-      // collection: [{ a: 1, b: 2 }],
+      collection: [{ a: 1, b: 2 }],
     };
   },
   computed: {

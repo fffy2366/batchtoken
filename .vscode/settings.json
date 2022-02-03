@@ -1,4 +1,6 @@
 {
     "solidity.defaultCompiler": "localFile",
-    "vetur.validation.template": false
+    "vetur.validation.template": false,
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2,
 }
