@@ -13,7 +13,8 @@ const state = {
     totalProvided: null,
     totalDistributeAmount: null,
     receiveAddresses: [],
-    amounts: []
+    amounts: [],
+    callFun: null
 };
 
 const getters = {
@@ -34,6 +35,15 @@ const getters = {
     },
     getTokenSymbol(state) {
         return state.tokenSymbol;
+    },
+    getReceiveAddresses(state) {
+        return state.receiveAddresses;
+    },
+    getAmounts(state) {
+        return state.amounts;
+    },
+    getCallFun(state) {
+        return state.callFun;
     }
 };
 
@@ -63,6 +73,17 @@ const actions = {
         let chainIdDec = parseInt(rootState.accounts.chainId);
         let address = addresses.NFTMarket[chainIdDec];
         commit("setBatchTokenSenderAddress", address);
+    },
+    storeReceiveAddresses({ commit }, { addresses }) {
+        commit("setReceiveAddresses", addresses);
+    },
+
+    storeAmounts({ commit }, { amounts }) {
+        commit("setAmounts", amounts);
+    },
+
+    storeCallFun({ commit }, { callFun }) {
+        commit("setCallFun", callFun);
     },
 
     async fetchTokenSymbol({ commit, dispatch }, { address }) {
@@ -106,6 +127,15 @@ const mutations = {
 
     setTokenSymbol(state, { address, symbol }) {
         state.tokenSymbol[address] = symbol;
+    },
+    setReceiveAddresses(state, addresses) {
+        state.receiveAddresses = addresses;
+    },
+    setAmounts(state, amounts) {
+        state.amounts = amounts;
+    },
+    setCallFun(state, callFun) {
+        state.callFun = callFun;
     }
 };
 

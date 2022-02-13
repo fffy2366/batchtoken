@@ -12,6 +12,7 @@ const state = {
     end: null,
     totalProvided: null,
     totalDistributeAmount: null,
+    allowance: null,
 };
 
 const getters = {
@@ -59,7 +60,7 @@ const actions = {
 
         commit("setIBEP20Address", address);
     },
-    async allowance({ state, dispatch }, { address, owner, spender }) {
+    async allowance({ commit, state, dispatch }, { address, owner, spender }) {
         if (!state.ibep20Contract || !state.ibep20Contract[address]) {
             await dispatch('fetchIBEP20Contract', { address });
         }
@@ -71,7 +72,7 @@ const actions = {
             .allowance(owner, spender)
             .call();
 
-        return balance;
+        commit("setAllowance", balance);
     },
 
     async fetchIBEP20Balance({ commit, dispatch, rootState }, { address, owner }) {
@@ -161,6 +162,9 @@ const mutations = {
     setTokenSymbol(state, { address, symbol }) {
         state.tokenSymbol[address] = symbol;
         console.log("tokenSymbol %o", state.tokenSymbol);
+    },
+    setAllowance(state, allowance) {
+        state.allowance = allowance;
     }
 };
 
