@@ -4,7 +4,8 @@ axios.defaults.timeout = 10000; // 超时10秒
 axios.defaults.headers["Content-Type"] = "application/json";
 
 export class Api {
-  private host = "https://stagingkrapi.meta.auto";
+  // private host = "https://stagingkrapi.meta.auto";
+  private host = "https://krapi.meta.auto";
   private address = "";
   private token: string | undefined;
   // private headers: {} | undefined;

@@ -136,14 +136,24 @@
 			<!-- <router-link to="/confirm" tag="button" class="btn btn-primary">
         下一步
       </router-link> -->
-			<section>
-				<input type="file" @change="onChangeUpload" />
+			<section class="d-flex justify-content-between flex-row">
+				<label class="upload">
+					<a class="btn btn-primary">
+						<span>Upload CSV file</span>
+					</a>
+					<input type="file" @change="onChangeUpload" />
+				</label>
 				<xlsx-read @parsed="onWorkbook" :file="file"> </xlsx-read>
+				<div>
+					<button
+						type="button"
+						class="btn btn-primary align-items-center"
+						@click="confirm"
+					>
+						下一步
+					</button>
+				</div>
 			</section>
-
-			<button type="button" class="btn btn-primary" @click="confirm">
-				下一步
-			</button>
 		</div>
 	</div>
 </template>
@@ -410,4 +420,12 @@ export default {
 // .text-underline-hover:hover {
 //   text-decoration: underline;
 // }
+
+.upload input {
+	position: absolute;
+	font-size: 100px;
+	right: 0;
+	top: 0;
+	opacity: 0;
+}
 </style>

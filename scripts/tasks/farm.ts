@@ -32,7 +32,8 @@ task("farm", "Farm")
       | "accounts"
       | "receive"
       | "deposit"
-      | "login";
+      | "login"
+      | "walletMe";
     const accounts = await hre.ethers.getSigners();
     const pres = [];
     let pre = [];
@@ -133,15 +134,17 @@ class Farm {
 
     const signature = await wallet.signMessage(msg);
     const api = new Api();
-    const loginResponse = await api.login(wallet.address, signature, ts);
-    const walletMe = await api.walletMe();
-    console.log("address is %s,token is %s", wallet.address, loginResponse);
-    console.log("wallet %o", walletMe);
+    await api.login(wallet.address, signature, ts);
+    // const loginResponse = await api.login(wallet.address, signature, ts);
+    // const walletMe = await api.walletMe();
+    // console.log("address is %s,token is %s", wallet.address, loginResponse);
+    // console.log("wallet %o", walletMe);
     // ship build
-    await this.build(api);
+    // await this.build(api);
     // ship synthesis
-    await this.synthesis(api);
+    // await this.synthesis(api);
     // TODO: farm
+    return api;
   }
 
   async accounts(index: number, wallet: SignerWithAddress) {
@@ -179,5 +182,14 @@ class Farm {
         console.log("synthesisRes is %o", synthesisRes);
       }
     }
+  }
+
+  async walletMe(index: number, wallet: SignerWithAddress, hre: HRE) {
+    const api = await this.login(index, wallet, hre);
+    const walletMe = await api.walletMe();
+    if (walletMe.kr > 0) {
+      console.log(walletMe);
+    }
+    return walletMe;
   }
 }

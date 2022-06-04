@@ -80,11 +80,9 @@
 			<!---->
 			<!---->
 			<!---->
-			<button type="button" class="button is-info">
-				<!---->
-				<span><span class="btn btn-primary"> 去授信</span></span>
-				<!---->
-			</button>
+			<button class="btn btn-primary">去授信</button>
+
+			<button class="btn btn-primary">上一步</button>
 		</div>
 
 		<div class="body-fix" v-if="send">
@@ -225,17 +223,34 @@ export default {
 	data() {
 		return {
 			msg: "Welcome",
-			approve: false,
-			send: true,
+			approve: true,
+			send: false,
 		};
 	},
 	computed: {
-		...mapGetters("accounts", ["getChainName", "isUserConnected"]),
+		...mapGetters("accounts", [
+			"getChainName",
+			"getActiveAccount",
+			"isUserConnected",
+		]),
 		...mapGetters("batchtokensender", [
+			"getBatchTokenSenderAddress",
 			"getReceiveAddresses",
 			"getAmounts",
 			"getCallFun",
 		]),
+		...mapGetters("ibep20", ["getAllowance"]),
+	},
+	async created() {
+		// TODO:
+		await this.$store.dispatch("batchtokensender/storeBatchTokenSenderAddress");
+		// const address = addresses.NFTMarket[chainIdDec];
+
+		await this.$store.dispatch("ibep20/allowance", {
+			address: "", // token address
+			owner: this.getActiveAccount,
+			spender: this.getBatchTokenSenderAddress, // contract address
+		});
 	},
 	components: {},
 	methods: {
@@ -246,11 +261,11 @@ export default {
 
 <style lang="sass">
 @mixin clearfix()
-  &::after
-    display: block
-    clear: both
-    content: ""
+	&::after
+		display: block
+		clear: both
+		content: ""
 
 .clearfix
-  @include clearfix
+	@include clearfix
 </style>

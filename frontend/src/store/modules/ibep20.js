@@ -33,6 +33,9 @@ const getters = {
     },
     getTokenSymbol(state) {
         return state.tokenSymbol;
+    },
+    getAllowance(state) {
+        return state.allowance
     }
 };
 
