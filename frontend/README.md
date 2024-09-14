@@ -1,41 +1,48 @@
 # frontend
 
-## Project setup
+This template should help get you started developing with Vue 3 in Vite.
 
-```
-yarn install
-```
+## Recommended IDE Setup
 
-### Compiles and hot-reloads for development
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-```
-yarn serve
-```
+## Customize configuration
 
-### Compiles and minifies for production
+See [Vite Configuration Reference](https://vitejs.dev/config/).
 
-```
-yarn build
+## Project Setup
+
+```sh
+npm install
 ```
 
-### Lints and fixes files
+### Compile and Hot-Reload for Development
 
+```sh
+npm run dev
 ```
-yarn lint
+
+### Compile and Minify for Production
+
+```sh
+npm run build
 ```
 
-### Customize configuration
+### Run Unit Tests with [Vitest](https://vitest.dev/)
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```sh
+npm run test:unit
+```
 
-https://v3.vuejs.org/guide/introduction.html
+### Lint with [ESLint](https://eslint.org/)
 
-https://vuex.vuejs.org/
-https://next.vuex.vuejs.org/
+```sh
+npm run lint
+```
 
-https://router.vuejs.org/installation.html
-https://next.router.vuejs.org/guide/
+问题：
+walletconnect ReferenceError: process is not defined
 
-[vue3-xlsx](https://www.npmjs.com/package/vue3-xlsx)
-[vue3-xlsx-doc](https://joaomede.github.io/vue3-xlsx/)
-[vue项目实现文件拖拽上传](https://www.jianshu.com/p/83311935d0c0)
+解决：
+https://github.com/WalletConnect/web3modal/issues/1192
+https://github.com/WalletConnect/web3modal/issues/455

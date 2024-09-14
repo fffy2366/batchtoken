@@ -20,6 +20,17 @@ module.exports = {
   configureWebpack: {
     devtool: "source-map",
   },
+  css: {
+    loaderOptions: {
+      scss: {
+        // Add any necessary options for sass-loader here
+        additionalData: `
+          @import "@/styles/variables.scss";
+        `,
+        implementation: require('sass'),
+      }
+    }
+  },
   devServer: {
     // host: "localhost",
     /* 本地ip地址 */
@@ -48,4 +59,5 @@ module.exports = {
       },
     },
   },
+  
 };

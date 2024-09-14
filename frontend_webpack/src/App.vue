@@ -33,20 +33,20 @@
 </template>
 
 <script>
-import Navbar from './components/Navbar.vue'
-import Sidebar from './components/Sidebar.vue'
-import { mapGetters } from 'vuex'
+import Navbar from "./components/Navbar.vue";
+import Sidebar from "./components/Sidebar.vue";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Navbar,
-    Sidebar
+    Sidebar,
   },
   computed: {
-    ...mapGetters('accounts', ['getChainName', 'isUserConnected'])
-  }
-}
+    ...mapGetters("accounts", ["getChainName", "isUserConnected"]),
+  },
+};
 </script>
 
 <style>
